@@ -63,8 +63,16 @@ modname = os.path.basename(__file__)[:-3] # calculating modname
 def start(core:VACore):
     manifest = {
         "name": "Болталка с OpenAI v2 - на ChatGPT с сохранением контекста",
-        "version": "1.1",
+        "version": "1.2",
         "require_online": True,
+        "description": "После указания apiKey позволяет вести диалог с ChatGPT.\n"
+                       "Голосовая команда: поболтаем|поговорим",
+        "url": "https://github.com/janvarev/irene_plugin_boltalka2_openai",
+
+        "options_label": {
+            "apiKey": "API-ключ OpenAI для доступа к ChatGPT", #
+            "system": "Вводная строка, задающая характер ответов помощника."
+        },
 
         "default_options": {
             "apiKey": "", #
