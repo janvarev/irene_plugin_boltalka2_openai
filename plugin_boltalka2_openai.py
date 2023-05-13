@@ -63,7 +63,7 @@ modname = os.path.basename(__file__)[:-3] # calculating modname
 def start(core:VACore):
     manifest = {
         "name": "Болталка с OpenAI v2 - на ChatGPT с сохранением контекста",
-        "version": "1.2",
+        "version": "2.0",
         "require_online": True,
         "description": "После указания apiKey позволяет вести диалог с ChatGPT.\n"
                        "Голосовая команда: поболтаем|поговорим",
@@ -71,11 +71,13 @@ def start(core:VACore):
 
         "options_label": {
             "apiKey": "API-ключ OpenAI для доступа к ChatGPT", #
+            "apiBaseUrl": "URL для OpenAI (нужен, если вы связываетесь с другим сервером, эмулирующим OpenAI)",  #
             "system": "Вводная строка, задающая характер ответов помощника."
         },
 
         "default_options": {
             "apiKey": "", #
+            "apiBaseUrl": "",  #
             "system": "Ты - Ирина, голосовой помощник, помогающий человеку. Давай ответы кратко и по существу."
         },
 
@@ -92,11 +94,13 @@ def run_start(core:VACore, phrase:str):
 
     options = core.plugin_options(modname)
 
-    if options["apiKey"] == "":
+    if options["apiKey"] == "" and options["apiBaseUrl"] == "":
         core.play_voice_assistant_speech("Нужен ключ апи для доступа к опенаи")
         return
 
     openai.api_key = options["apiKey"]
+    if options["apiBaseUrl"] != "":
+        openai.api_base = options["apiBaseUrl"]
 
     core.chatapp = ChatApp(system=options["system"]) # создаем новый чат
     if phrase == "":
